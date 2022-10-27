@@ -1,5 +1,8 @@
 {
   description = "A very basic flake";
+  nixConfig = {
+    allow-import-from-derivation = "true";
+  };
   inputs.haskellNix.url = "github:input-output-hk/haskell.nix";
   inputs.nixpkgs.follows = "haskellNix/nixpkgs-unstable";
   inputs.flake-utils.url = "github:numtide/flake-utils";
@@ -21,6 +24,13 @@
               # Non-Haskell shell tools go here
               shell.buildInputs = with pkgs; [
               ];
+        flake.variants = {
+#            ghc844.compiler-nix-name = pkgs.lib.mkForce "ghc844";
+            ghc865.compiler-nix-name = pkgs.lib.mkForce "ghc865";
+            ghc884.compiler-nix-name = pkgs.lib.mkForce "ghc884";
+            ghc902.compiler-nix-name = pkgs.lib.mkForce "ghc902";
+            ghc924.compiler-nix-name = pkgs.lib.mkForce "ghc924";
+        };
             };
         })
       ];
