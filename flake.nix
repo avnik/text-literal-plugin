@@ -15,7 +15,7 @@
           helloProject =
             final.haskell-nix.project' {
               src = ./.;
-              compiler-nix-name = "ghc8107";
+              compiler-nix-name = "ghc884";
               # This is used by `nix develop .` to open a shell for use with
               # `cabal`, `hlint` and `haskell-language-server`
               shell.tools = {
@@ -24,14 +24,14 @@
               # Non-Haskell shell tools go here
               shell.buildInputs = with pkgs; [
               ];
-        flake.variants = {
-#            ghc844.compiler-nix-name = pkgs.lib.mkForce "ghc844";
-            ghc865.compiler-nix-name = pkgs.lib.mkForce "ghc865";
-            ghc884.compiler-nix-name = pkgs.lib.mkForce "ghc884";
-            ghc902.compiler-nix-name = pkgs.lib.mkForce "ghc902";
-            ghc924.compiler-nix-name = pkgs.lib.mkForce "ghc924";
-        };
-            };
+              modules = [
+               { packages.ghc-tcplugin-api.doHaddock = false; } 
+              ];
+              flake.variants = {
+                ghc884.compiler-nix-name = pkgs.lib.mkForce "ghc884";
+                ghc924.compiler-nix-name = pkgs.lib.mkForce "ghc924";
+              };
+          };
         })
       ];
       pkgs = import nixpkgs { inherit system overlays; inherit (haskellNix) config; };
@@ -39,6 +39,6 @@
       };
     in flake // {
       # Built by `nix build .`
-      packages.default = flake.packages."segfault-repro:exe:segfault-repro";
+#      packages.default = flake.packages."segfault-repro:exe:segfault-repro";
     });
 }

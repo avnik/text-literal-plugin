@@ -1,0 +1,76 @@
+cabal-version:      2.2 
+name:               text-literals-plugin
+version:            0.1.0.0
+description:        Please see the README on Github at <https://github.com/avnik/text-literals-plugin#readme>
+homepage:           https://github.com/avnik/text-literals-plugin#readme
+bug-reports:        https://github.com/avnik/text-literals-plugin/issues
+author:             Alexander V. Nikolaev
+maintainer:         avn@avnik.info
+copyright:          2022 Alexander V. Nikolaev
+license:            BSD-3-Clause
+build-type:         Simple
+
+common forall
+  default-language:   Haskell2010
+  default-extensions:
+    BlockArguments
+    LambdaCase
+    MultiWayIf
+    ViewPatterns
+    NamedFieldPuns
+    FlexibleInstances
+    FlexibleContexts
+
+library
+  import: forall
+  hs-source-dirs:
+    plugin
+  build-depends:
+    base >= 4.8 && < 5,
+    ghc >=8.8 && <9.3,
+    mtl,
+    syb,
+    uniplate
+  exposed-modules:
+    Data.Text.Literal.Plugin
+  other-modules:    
+    Data.Text.Literal.Shims
+
+executable demo 
+  import:             forall
+  hs-source-dirs:     examples 
+  main-is:            Demo.hs 
+  build-depends:
+    base >= 4.8 && < 5,
+    text,
+    record-dot-preprocessor,
+    record-hasfield,
+    large-anon,
+    text-literals-plugin
+
+executable overloaded-repro 
+  import:             forall
+  hs-source-dirs:     examples 
+  main-is:            Repro.hs 
+  build-depends:
+    base >= 4.8 && < 5,
+    text,
+    record-dot-preprocessor,
+    record-hasfield,
+    large-anon,
+    text-literals-plugin
+
+test-suite test-plugin
+  import:             forall
+  type:
+    exitcode-stdio-1.0
+  main-is:            Test.hs
+  other-modules:
+    Tests.Sanity
+  hs-source-dirs:     tests 
+  build-depends:
+    base >= 4.8 && < 5,
+    text,
+    tasty,
+    tasty-hunit,
+    text-literals-plugin
