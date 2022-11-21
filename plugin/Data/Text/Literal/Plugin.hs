@@ -30,7 +30,6 @@ transformDecls (L l modl@HsModule {hsmodDecls = decls, hsmodImports}) = do
     (decls', getAny -> needImports) <- runWriterT $ for decls $ transformDecl 
 
     let modls = if needImports then [importDecl dataTextModule True] else []
---    checkEnabledExtensions l
 
     -- We add imports whether or not there were some errors, to avoid spurious
     -- additional errors from ghc about things not in scope.
@@ -44,20 +43,13 @@ transformDecl :: LHsDecl GhcPs -> WriterT Any Hsc (LHsDecl GhcPs)
 transformDecl = Uniplate.transformBiM \case
   lit@(L l (HsLit _ (HsString _ _))) -> do
     tell $ Any True
-    pure $ L l $ exprWithTySig l lit
+    pure $ exprWithTySig lit
   other -> pure other
   where
-    exprWithTySig :: SrcSpan -> LHsExpr GhcPs -> HsExpr GhcPs
-    exprWithTySig l lit = ExprWithTySig defExt lit (mkHsWildCardBndrs $ implicitBndrs $ textT' l)
-    textT :: SrcSpan -> LHsSigWcType GhcPs
-    textT l = HsWC defExt $ implicitBndrs (textT' l)
-    textT' :: SrcSpan -> LHsType GhcPs
-    textT' l = L l $ HsTyVar defExt NotPromoted $ L l textTV
-    -- textT l = mkHsWildCardBndrs $ HsTyVar defExt NotPromoted $ L l textTV
-    implicitBndrs :: a -> HsImplicitBndrs GhcPs a
-    implicitBndrs a = HsIB defExt a
-    textTV :: RdrName
-    textTV =  mkRdrQual dataTextModule $ mkTcOcc textTyName
+    exprWithTySig :: LHsExpr GhcPs -> LHsExpr GhcPs
+    exprWithTySig lit@(L l _) = L l $ ExprWithTySig defExt lit $ mkHsWildCardBndrs $ HsIB defExt $ textT l
+    textT :: SrcSpan -> LHsType GhcPs
+    textT l = L l $ HsTyVar defExt NotPromoted $ L l $ mkRdrQual dataTextModule $ mkTcOcc textTyName 
     textTyName = "Text"
 
 dataTextModule = mkModuleName "Data.Text"

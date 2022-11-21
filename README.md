@@ -1,16 +1,6 @@
-## Repro of haskell.nix + GHC plugin
+## GHC plugin for wrapping all string literals with  Text type annotation
 
-It segfault on GHC 8.10.7.
+### Motivation
 
-# Steps
-
-Enter into `nix develop` and run `cabal build`
-
-# Expected
-
-no segfaults (But happens)
-
-NOTE: bug triggered by adding
-```haskell
-GHC.pluginRecompile = GHC.purePlugin
-```
+We wanted overloaded strings to be a `Text` by default
+Tested with GHC 8.8.4

@@ -1,5 +1,5 @@
 cabal-version:      2.2 
-name:               text-literals-plugin
+name:               text-literal-plugin
 version:            0.1.0.0
 description:        Please see the README on Github at <https://github.com/avnik/text-literals-plugin#readme>
 homepage:           https://github.com/avnik/text-literals-plugin#readme
@@ -46,7 +46,7 @@ executable demo
     record-dot-preprocessor,
     record-hasfield,
     large-anon,
-    text-literals-plugin
+    text-literal-plugin
 
 executable overloaded-repro 
   import:             forall
@@ -58,7 +58,7 @@ executable overloaded-repro
     record-dot-preprocessor,
     record-hasfield,
     large-anon,
-    text-literals-plugin
+    text-literal-plugin
 
 test-suite test-plugin
   import:             forall
@@ -73,4 +73,4 @@ test-suite test-plugin
     text,
     tasty,
     tasty-hunit,
-    text-literals-plugin
+    text-literal-plugin
