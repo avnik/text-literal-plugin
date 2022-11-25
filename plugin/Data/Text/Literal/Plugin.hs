@@ -40,14 +40,18 @@ transformDecls (L l modl@HsModule {hsmodDecls = decls, hsmodImports}) = do
 
 
 transformDecl :: LHsDecl GhcPs -> WriterT Any Hsc (LHsDecl GhcPs) 
-transformDecl = Uniplate.transformBiM \case
-  lit@(L l (HsLit _ (HsString _ _))) -> do
-    tell $ Any True
-    pure $ exprWithTySig lit
-  other -> pure other
+transformDecl = Uniplate.descendBiM goBi
   where
-    exprWithTySig :: LHsExpr GhcPs -> LHsExpr GhcPs
-    exprWithTySig lit@(L l _) = L l $ ExprWithTySig defExt lit $ mkHsWildCardBndrs $ HsIB defExt $ textT l
+    goBi :: LHsExpr GhcPs -> WriterT Any Hsc (LHsExpr GhcPs)
+    goBi = \case
+      lit@(L l (HsLit _ (HsString _ _))) -> do
+        tell $ Any True
+        pure $ L l $ HsPar defExt $ L l $ ExprWithTySig defExt lit $ mkHsWildCardBndrs $ HsIB defExt $ textT l 
+
+        -- bypass already explicitly annotated types  
+      pass@(L _ (ExprWithTySig _ _ _)) -> pure pass
+      other -> Uniplate.descendM goBi other
+
     textT :: SrcSpan -> LHsType GhcPs
     textT l = L l $ HsTyVar defExt NotPromoted $ L l $ mkRdrQual dataTextModule $ mkTcOcc textTyName 
     textTyName = "Text"

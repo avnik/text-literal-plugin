@@ -21,3 +21,4 @@ instance AsText T.Text where
 sanity :: Assertion
 sanity = do
   asText "text" @?= True
+  asText ("string" :: String) @?= False

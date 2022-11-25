@@ -36,7 +36,6 @@ module Data.Text.Literal.Shims (
   , kindedTyVar
   , hsTyVarLName
   , setDefaultSpecificity
-  , typeToHsSigWc
 
     -- * New functionality
   , compareHs
@@ -141,13 +140,6 @@ conPat :: Located RdrName -> HsConPatDetails GhcPs -> Pat GhcPs
 conPat x y = ConPatIn x y
 #else
 conPat x y = ConPat noExtField x y
-#endif
-
-typeToHsSigWc :: LHsType GhcPs -> LHsSigWcType GhcPs 
-#if __GLASGOW_HASKELL__ < 900
-typeToHsSigWc = mkLHsSigWcType
-#else
-typeToHsSigWc = hsTypeToHsSigWcType
 #endif
 
 mkFunBind :: Located RdrName -> [LMatch GhcPs (LHsExpr GhcPs)] -> HsBind GhcPs
