@@ -38,6 +38,9 @@ transformDecls (L l modl@HsModule {hsmodDecls = decls, hsmodImports}) = do
       , hsmodImports = hsmodImports ++ modls
       }
 
+--
+-- Trick with WriterT Any -- Any is a newtyped Bool, with Semigroupoid instance, with <> doing &&
+-- so is almost WriterT Bool
 
 transformDecl :: LHsDecl GhcPs -> WriterT Any Hsc (LHsDecl GhcPs) 
 transformDecl = Uniplate.descendBiM goBi

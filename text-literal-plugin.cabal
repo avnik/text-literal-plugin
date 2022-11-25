@@ -26,11 +26,11 @@ library
   hs-source-dirs:
     plugin
   build-depends:
-    base >= 4.8 && < 5,
-    ghc >=8.8 && <9.3,
-    mtl,
-    syb,
-    uniplate
+      base >= 4.8 && < 5
+    , ghc >=8.8 && <9.3
+    , mtl              >= 2.2.1  && < 2.3
+    , syb              >= 0.7    && < 0.8
+    , uniplate
   exposed-modules:
     Data.Text.Literal.Plugin
   other-modules:    
@@ -45,8 +45,8 @@ test-suite test-plugin
     Tests.Sanity
   hs-source-dirs:     tests 
   build-depends:
-    base >= 4.8 && < 5,
-    text,
-    tasty,
-    tasty-hunit,
-    text-literal-plugin
+      base >= 4.8 && < 5
+    , text
+    , tasty
+    , tasty-hunit
+    , text-literal-plugin
