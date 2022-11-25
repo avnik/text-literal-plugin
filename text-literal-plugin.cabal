@@ -36,30 +36,6 @@ library
   other-modules:    
     Data.Text.Literal.Shims
 
-executable demo 
-  import:             forall
-  hs-source-dirs:     examples 
-  main-is:            Demo.hs 
-  build-depends:
-    base >= 4.8 && < 5,
-    text,
-    record-dot-preprocessor,
-    record-hasfield,
-    large-anon,
-    text-literal-plugin
-
-executable overloaded-repro 
-  import:             forall
-  hs-source-dirs:     examples 
-  main-is:            Repro.hs 
-  build-depends:
-    base >= 4.8 && < 5,
-    text,
-    record-dot-preprocessor,
-    record-hasfield,
-    large-anon,
-    text-literal-plugin
-
 test-suite test-plugin
   import:             forall
   type:
