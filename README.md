@@ -29,4 +29,13 @@ qualified import on Data.Text also would be auto added:
     import qualified Data.Text
 ```
 
+# GHC versions support
+
 Tested with GHC 8.8.4
+
+Code written with other GHC versions in mind, but no tests was performed.
+
+# Copyrights
+
+Development backed by Monadfix OU, and Juspay Technologies Pvt Ltd
+Shim.hs was borrowed from `large-records`, and copyrighted by Edsko de Vries and Well Typed.
